@@ -34,19 +34,22 @@ app.post("/tasks", (req, res) => {
 // PUT endpiont to update an existing task item with the specified id
 // provide updated title and/or completed in the request body as JSON
 app.put("/tasks/:id", (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = req.params.id;
   const task = tasks.find((t) => t.id === id);
   if (!task) {
     return res.status(404).json({ error: "task not found" });
   }
+  console.log(task, 'request task')
   task.title = req.body.title || task.title;
-  task.completed = req.body.completed || task.completed;
+  task.description = req.body.description || task.description;
+  task.status = req.body.status || task.status;
+  task.deadline = req.body.deadline || task.deadline;
   res.json(task);
 });
 
 // DELETE endpoint to remove an existing task item with the specified id
 app.delete("/tasks/:id", (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = req.params.id;
   const index = tasks.findIndex((t) => t.id === id);
   if (index === -1) {
     return res.status(404).json({ error: "task not found" });
